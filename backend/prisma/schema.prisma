@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model WorkLog {
+  id              String    @id @default(uuid())
+  taskName        String
+  description     String?
+  project         String?
+  startTime       DateTime
+  endTime         DateTime?
+  durationMinutes Int?
+  tags            String[]
+  status          Status    @default(in_progress)
+  priority        Priority  @default(medium)
+  categoryId      String?
+  category        Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@map("work_logs")
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  color     String    @default("#6366f1")
+  icon      String    @default("📁")
+  workLogs  WorkLog[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("categories")
+}
+
+enum Status {
+  in_progress
+  completed
+  on_hold
+}
+
+enum Priority {
+  high
+  medium
+  low
+}
