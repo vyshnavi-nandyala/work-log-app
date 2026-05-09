@@ -8,3 +8,12 @@ build/
 .DS_Store
 coverage/
 prisma/migrations/
+
+# Allow essential repository config files when user/global ignores hide them
+!backend/package.json
+!frontend/package.json
+!frontend/tsconfig.json
+!backend/.env.example
+!frontend/.env.local.example
+!frontend/src/components/logs/
+!frontend/src/components/logs/**
